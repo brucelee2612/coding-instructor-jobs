@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💻 코딩강사 구인공고 대시보드</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: #e4e4e4; padding: 20px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header { text-align: center; padding: 30px 0; border-bottom: 1px solid #333; margin-bottom: 30px; }
+    h1 { font-size: 2rem; background: linear-gradient(90deg, #00d2ff, #3a7bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+    .profile-box { background: rgba(58, 123, 213, 0.1); border: 1px solid #3a7bd5; border-radius: 12px; padding: 15px 20px; margin: 20px auto; max-width: 600px; text-align: left; }
+    .profile-box h3 { color: #3a7bd5; margin-bottom: 10px; }
+    .profile-box ul { list-style: none; }
+    .profile-box li { margin: 5px 0; color: #aaa; }
+    .profile-box li strong { color: #fff; }
+    .stats { display: flex; justify-content: center; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
+    .stat-box { background: rgba(255,255,255,0.05); padding: 15px 25px; border-radius: 12px; text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: bold; color: #00d2ff; }
+    .stat-label { font-size: 0.85rem; color: #888; }
+    .filters-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 15px; }
+    .search-input { flex: 1; min-width: 150px; max-width: 300px; padding: 10px 15px; font-size: 0.9rem; border: 1px solid #444; border-radius: 8px; background: rgba(255,255,255,0.05); color: #fff; }
+    .filter-select { padding: 10px 15px; font-size: 0.85rem; border: 1px solid #444; border-radius: 8px; background: #1a1a2e; color: #e4e4e4; cursor: pointer; min-width: 130px; }
+    .quick-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-chip { padding: 6px 14px; font-size: 0.85rem; border: 1px solid #444; border-radius: 20px; background: transparent; color: #aaa; cursor: pointer; transition: all 0.2s; }
+    .filter-chip:hover { border-color: #3a7bd5; color: #fff; }
+    .filter-chip.active { background: #3a7bd5; border-color: #3a7bd5; color: #fff; }
+    .job-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+    .job-card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; border: 1px solid #333; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .job-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-color: #3a7bd5; }
+    .job-card.recommended { border-color: #ffd700; background: linear-gradient(135deg, rgba(255,215,0,0.08) 0%, rgba(255,165,0,0.05) 100%); }
+    .job-title { font-size: 1.05rem; font-weight: 600; color: #fff; line-height: 1.4; }
+    .job-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .badge { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; font-weight: 500; }
+    .badge-new { background: #c41e3a; color: #fff; }
+    .badge-scratch { background: #ff9800; color: #000; }
+    .badge-roblox { background: #e91e63; color: #fff; }
+    .badge-robotics { background: #4caf50; color: #fff; }
+    .badge-cospaces { background: #9c27b0; color: #fff; }
+    .badge-fulltime { background: #2196f3; color: #fff; }
+    .badge-parttime { background: #607d8b; color: #fff; }
+    .badge-afterschool { background: #795548; color: #fff; }
+    .job-company { color: #3a7bd5; font-weight: 500; margin-bottom: 6px; margin-top: 10px; }
+    .job-location { color: #888; font-size: 0.9rem; }
+    .job-pay { color: #4ade80; font-weight: 600; margin-top: 8px; }
+    .section-title { font-size: 1.3rem; margin: 30px 0 20px; color: #fff; }
+    .last-updated { text-align: center; color: #666; font-size: 0.85rem; margin-top: 40px; padding: 20px; }
+    .empty-state { text-align: center; padding: 60px; color: #666; }
+    .empty-state h2 { color: #888; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💻 코딩강사 구인공고</h1>
+      <p style="color: #888;">AI가 찾아주는 코딩강사 일자리</p>
+      <div class="profile-box">
+        <h3>👤 소룡이 프로필</h3>
+        <ul>
+          <li><strong>경력:</strong> 2023년 7월~ (약 1년 7개월)</li>
+          <li><strong>스킬:</strong> 로블록스, 코스페이시스, 스크래치, 로보틱스</li>
+          <li><strong>언어:</strong> 한국어</li>
+        </ul>
+      </div>
+      <div class="stats">
+        <div class="stat-box"><div class="stat-number" id="totalJobs">0</div><div class="stat-label">전체 공고</div></div>
+        <div class="stat-box"><div class="stat-number" id="todayJobs">0</div><div class="stat-label">오늘 발견</div></div>
+        <div class="stat-box"><div class="stat-number" id="matchJobs">0</div><div class="stat-label">⭐ 추천</div></div>
+      </div>
+    </header>
+    
+    <div class="filters-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍 검색..." oninput="applyFilters()">
+      
+      <select class="filter-select" id="typeFilter" onchange="applyFilters()">
+        <option value="all">📋 유형: 전체</option>
+        <option value="academy">🏫 학원</option>
+        <option value="afterschool">🏫 방과후</option>
+        <option value="online">💻 온라인</option>
+        <option value="freelance">🆓 프리랜서</option>
+      </select>
+      
+      <select class="filter-select" id="skillFilter" onchange="applyFilters()">
+        <option value="all">🛠️ 스킬: 전체</option>
+        <option value="scratch">🐱 스크래치</option>
+        <option value="roblox">🎮 로블록스</option>
+        <option value="cospaces">🌐 코스페이시스</option>
+        <option value="robotics">🤖 로보틱스</option>
+      </select>
+    </div>
+    
+    <div class="quick-filters">
+      <button class="filter-chip" data-filter="today" onclick="toggleChip(this)" style="background:#c41e3a;color:#fff;border-color:#c41e3a;">📅 오늘 발견</button>
+      <button class="filter-chip" data-filter="recommended" onclick="toggleChip(this)">⭐ 추천</button>
+      <button class="filter-chip" data-filter="new" onclick="toggleChip(this)">🆕 신규</button>
+    </div>
+    
+    <h2 class="section-title">⭐ 추천 공고</h2>
+    <div class="job-grid" id="recommendedJobs">
+      <div class="empty-state">
+        <h2>🔍 공고 검색 중...</h2>
+        <p>곧 코딩강사 구인공고가 업데이트됩니다!</p>
+      </div>
+    </div>
+    
+    <h2 class="section-title">📋 전체 공고</h2>
+    <div class="job-grid" id="allJobs">
+      <div class="empty-state">
+        <h2>📭 아직 공고가 없습니다</h2>
+        <p>첫 번째 검색이 진행되면 여기에 표시됩니다.</p>
+      </div>
+    </div>
+    
+    <div class="last-updated">마지막 업데이트: 2026-02-10 09:20 (시스템 구축 완료!) | 첫 검색 예정</div>
+  </div>
+
+<script>
+const jobs = [
+  // 공고 데이터가 여기에 추가됩니다
+];
+
+function applyFilters() {
+  // 필터 로직
+}
+
+function toggleChip(btn) {
+  btn.classList.toggle('active');
+  applyFilters();
+}
+
+// 통계 업데이트
+document.getElementById('totalJobs').textContent = jobs.length;
+document.getElementById('todayJobs').textContent = jobs.filter(j => j.dateFound === new Date().toISOString().split('T')[0]).length;
+document.getElementById('matchJobs').textContent = jobs.filter(j => j.recommended).length;
+</script>
+</body>
+</html>
