@@ -38,22 +38,24 @@
     .badge-roblox { background: #e91e63; color: #fff; }
     .badge-robotics { background: #4caf50; color: #fff; }
     .badge-cospaces { background: #9c27b0; color: #fff; }
-    .badge-fulltime { background: #2196f3; color: #fff; }
+    .badge-web { background: #2196f3; color: #fff; }
+    .badge-python { background: #3776ab; color: #fff; }
+    .badge-ai { background: #ff5722; color: #fff; }
+    .badge-korean { background: #c62828; color: #fff; }
     .badge-parttime { background: #607d8b; color: #fff; }
-    .badge-afterschool { background: #795548; color: #fff; }
+    .badge-fulltime { background: #4caf50; color: #fff; }
+    .badge-rec { background: #ffd700; color: #000; }
     .job-company { color: #3a7bd5; font-weight: 500; margin-bottom: 6px; margin-top: 10px; }
     .job-location { color: #888; font-size: 0.9rem; }
     .job-pay { color: #4ade80; font-weight: 600; margin-top: 8px; }
     .section-title { font-size: 1.3rem; margin: 30px 0 20px; color: #fff; }
     .last-updated { text-align: center; color: #666; font-size: 0.85rem; margin-top: 40px; padding: 20px; }
-    .empty-state { text-align: center; padding: 60px; color: #666; }
-    .empty-state h2 { color: #888; margin-bottom: 10px; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>💻 코딩강사 구인공고</h1>
+      <h1>💻 코딩강사 구인공고 (뉴욕)</h1>
       <p style="color: #888;">AI가 찾아주는 코딩강사 일자리</p>
       <div class="profile-box">
         <h3>👤 소룡이 프로필</h3>
@@ -65,75 +67,125 @@
         </ul>
       </div>
       <div class="stats">
-        <div class="stat-box"><div class="stat-number" id="totalJobs">0</div><div class="stat-label">전체 공고</div></div>
-        <div class="stat-box"><div class="stat-number" id="todayJobs">0</div><div class="stat-label">오늘 발견</div></div>
-        <div class="stat-box"><div class="stat-number" id="matchJobs">0</div><div class="stat-label">⭐ 추천</div></div>
+        <div class="stat-box"><div class="stat-number">7</div><div class="stat-label">전체 공고</div></div>
+        <div class="stat-box"><div class="stat-number">7</div><div class="stat-label">오늘 발견</div></div>
+        <div class="stat-box"><div class="stat-number">3</div><div class="stat-label">⭐ 추천</div></div>
       </div>
     </header>
     
-    <div class="filters-bar">
-      <input type="text" class="search-input" id="searchInput" placeholder="🔍 검색..." oninput="applyFilters()">
-      
-      <select class="filter-select" id="typeFilter" onchange="applyFilters()">
-        <option value="all">📋 유형: 전체</option>
-        <option value="academy">🏫 학원</option>
-        <option value="afterschool">🏫 방과후</option>
-        <option value="online">💻 온라인</option>
-        <option value="freelance">🆓 프리랜서</option>
-      </select>
-      
-      <select class="filter-select" id="skillFilter" onchange="applyFilters()">
-        <option value="all">🛠️ 스킬: 전체</option>
-        <option value="scratch">🐱 스크래치</option>
-        <option value="roblox">🎮 로블록스</option>
-        <option value="cospaces">🌐 코스페이시스</option>
-        <option value="robotics">🤖 로보틱스</option>
-      </select>
-    </div>
-    
     <div class="quick-filters">
-      <button class="filter-chip" data-filter="today" onclick="toggleChip(this)" style="background:#c41e3a;color:#fff;border-color:#c41e3a;">📅 오늘 발견</button>
-      <button class="filter-chip" data-filter="recommended" onclick="toggleChip(this)">⭐ 추천</button>
-      <button class="filter-chip" data-filter="new" onclick="toggleChip(this)">🆕 신규</button>
+      <button class="filter-chip active" style="background:#c41e3a;color:#fff;border-color:#c41e3a;">📅 오늘 발견</button>
+      <button class="filter-chip">⭐ 추천</button>
+      <button class="filter-chip">🐱 Scratch</button>
+      <button class="filter-chip">🎮 Roblox</button>
+      <button class="filter-chip">🇰🇷 한인</button>
     </div>
     
-    <h2 class="section-title">⭐ 추천 공고</h2>
-    <div class="job-grid" id="recommendedJobs">
-      <div class="empty-state">
-        <h2>🔍 공고 검색 중...</h2>
-        <p>곧 코딩강사 구인공고가 업데이트됩니다!</p>
+    <h2 class="section-title">⭐ 추천 공고 TOP 3</h2>
+    <div class="job-grid">
+      <div class="job-card recommended" onclick="window.open('https://www.indeed.com/jobs?q=Tech+Instructor+Coding+Black+Currency&l=Brooklyn', '_blank')">
+        <div class="job-title">Tech Instructor: Coding & Web Design</div>
+        <div class="job-badges">
+          <span class="badge badge-new">🆕 오늘</span>
+          <span class="badge badge-rec">⭐ 추천</span>
+          <span class="badge badge-scratch">Scratch</span>
+          <span class="badge badge-python">Python</span>
+          <span class="badge badge-web">Web</span>
+          <span class="badge badge-parttime">파트타임</span>
+        </div>
+        <div class="job-company">The Black Currency</div>
+        <div class="job-location">📍 Brooklyn, NY 11207</div>
+        <div class="job-pay">💰 $25 - $29/hr</div>
+        <div style="color: #888; font-size: 0.85rem; margin-top: 10px;">
+          ✅ Scratch, Python, HTML/CSS, 웹디자인 가르침<br>
+          ✅ 주 20-27시간, 주말 포함<br>
+          ✅ 11-19세 대상
+        </div>
+      </div>
+      
+      <div class="job-card recommended" onclick="window.open('https://www.indeed.com/jobs?q=Summer+AI+Coding+Teacher+Flushing', '_blank')">
+        <div class="job-title">Summer AI / Coding Teacher</div>
+        <div class="job-badges">
+          <span class="badge badge-new">🆕 오늘</span>
+          <span class="badge badge-rec">⭐ 추천</span>
+          <span class="badge badge-ai">AI</span>
+          <span class="badge badge-korean">한인지역</span>
+        </div>
+        <div class="job-company">Modern Chinese School</div>
+        <div class="job-location">📍 Flushing, NY 11355 (한인 밀집!)</div>
+        <div class="job-pay">💰 급여 협의</div>
+        <div style="color: #888; font-size: 0.85rem; margin-top: 10px;">
+          ✅ Flushing = 한인 밀집 지역<br>
+          ✅ 여름 프로그램<br>
+          ✅ AI/코딩 교육
+        </div>
+      </div>
+      
+      <div class="job-card recommended" onclick="window.open('https://www.indeed.com/jobs?q=Korean+Community+Services+Instructor+Corona', '_blank')">
+        <div class="job-title">KOREAN DATA/Smartphone Instructor</div>
+        <div class="job-badges">
+          <span class="badge badge-new">🆕 오늘</span>
+          <span class="badge badge-rec">⭐ 추천</span>
+          <span class="badge badge-korean">🇰🇷 한인</span>
+        </div>
+        <div class="job-company">Korean Community Services</div>
+        <div class="job-location">📍 Corona, NY 11368</div>
+        <div class="job-pay">💰 급여 협의</div>
+        <div style="color: #888; font-size: 0.85rem; margin-top: 10px;">
+          ✅ 한인 커뮤니티 센터!<br>
+          ✅ 시니어 대상 교육<br>
+          ✅ 한국어 필수
+        </div>
       </div>
     </div>
     
     <h2 class="section-title">📋 전체 공고</h2>
-    <div class="job-grid" id="allJobs">
-      <div class="empty-state">
-        <h2>📭 아직 공고가 없습니다</h2>
-        <p>첫 번째 검색이 진행되면 여기에 표시됩니다.</p>
+    <div class="job-grid">
+      <div class="job-card" onclick="window.open('https://www.indeed.com/jobs?q=Teaching+Assistant+Prestige+Institute+Bayside', '_blank')">
+        <div class="job-title">Teaching Assistant (TA)</div>
+        <div class="job-badges">
+          <span class="badge badge-new">🆕 오늘</span>
+        </div>
+        <div class="job-company">Prestige Institute</div>
+        <div class="job-location">📍 Bayside, NY 11361</div>
+        <div class="job-pay">💰 401(k) 제공</div>
+      </div>
+      
+      <div class="job-card" onclick="window.open('https://www.indeed.com/jobs?q=After+School+Teacher+Little+Neck', '_blank')">
+        <div class="job-title">After School Teacher</div>
+        <div class="job-badges">
+          <span class="badge badge-new">🆕 오늘</span>
+          <span class="badge badge-parttime">파트타임</span>
+        </div>
+        <div class="job-company">Afterschool, Little Neck</div>
+        <div class="job-location">📍 Little Neck, NY 11362</div>
+        <div class="job-pay">💰 PTO + 유연근무</div>
+      </div>
+      
+      <div class="job-card" onclick="window.open('https://www.linkedin.com/jobs/view/4363811708/', '_blank')">
+        <div class="job-title">Entry-Level to Experienced Teacher</div>
+        <div class="job-badges">
+          <span class="badge badge-new">🆕 오늘</span>
+          <span class="badge badge-fulltime">풀타임</span>
+        </div>
+        <div class="job-company">Success Academy Charter Schools</div>
+        <div class="job-location">📍 New York, NY (대면)</div>
+        <div class="job-pay">💰 $65K - $75K/연</div>
+      </div>
+      
+      <div class="job-card" onclick="window.open('https://www.linkedin.com/jobs/view/4313123426/', '_blank')">
+        <div class="job-title">Python Video Course Instructor</div>
+        <div class="job-badges">
+          <span class="badge badge-new">🆕 오늘</span>
+          <span class="badge badge-python">Python</span>
+        </div>
+        <div class="job-company">Real Python</div>
+        <div class="job-location">📍 미국 (재택근무)</div>
+        <div class="job-pay">💰 급여 협의</div>
       </div>
     </div>
     
-    <div class="last-updated">마지막 업데이트: 2026-02-10 09:20 (시스템 구축 완료!) | 첫 검색 예정</div>
+    <div class="last-updated">마지막 업데이트: 2026-02-10 09:28 (첫 검색 완료!) | 매일 오전 10시 자동 업데이트</div>
   </div>
-
-<script>
-const jobs = [
-  // 공고 데이터가 여기에 추가됩니다
-];
-
-function applyFilters() {
-  // 필터 로직
-}
-
-function toggleChip(btn) {
-  btn.classList.toggle('active');
-  applyFilters();
-}
-
-// 통계 업데이트
-document.getElementById('totalJobs').textContent = jobs.length;
-document.getElementById('todayJobs').textContent = jobs.filter(j => j.dateFound === new Date().toISOString().split('T')[0]).length;
-document.getElementById('matchJobs').textContent = jobs.filter(j => j.recommended).length;
-</script>
 </body>
 </html>
