@@ -1,295 +1,337 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>💻 코딩강사 구인공고 대시보드</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; color: #e4e4e4; padding: 20px; }
-    .container { max-width: 1200px; margin: 0 auto; }
-    header { text-align: center; padding: 30px 0; border-bottom: 1px solid #333; margin-bottom: 30px; }
-    h1 { font-size: 2rem; background: linear-gradient(90deg, #00d2ff, #3a7bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-    .profile-box { background: rgba(58, 123, 213, 0.1); border: 1px solid #3a7bd5; border-radius: 12px; padding: 15px 20px; margin: 20px auto; max-width: 600px; text-align: left; }
-    .profile-box h3 { color: #3a7bd5; margin-bottom: 10px; }
-    .profile-box ul { list-style: none; }
-    .profile-box li { margin: 5px 0; color: #aaa; }
-    .profile-box li strong { color: #fff; }
-    .stats { display: flex; justify-content: center; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
-    .stat-box { background: rgba(255,255,255,0.05); padding: 15px 25px; border-radius: 12px; text-align: center; }
-    .stat-number { font-size: 2rem; font-weight: bold; color: #00d2ff; }
-    .stat-label { font-size: 0.85rem; color: #888; }
-    .new-badge { background: #c41e3a; color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-    .filters-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 15px; }
-    .search-input { flex: 1; min-width: 150px; max-width: 300px; padding: 10px 15px; font-size: 0.9rem; border: 1px solid #444; border-radius: 8px; background: rgba(255,255,255,0.05); color: #fff; }
-    .filter-select { padding: 10px 15px; font-size: 0.85rem; border: 1px solid #444; border-radius: 8px; background: #1a1a2e; color: #e4e4e4; cursor: pointer; min-width: 130px; }
-    .quick-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-    .filter-chip { padding: 6px 14px; font-size: 0.85rem; border: 1px solid #444; border-radius: 20px; background: transparent; color: #aaa; cursor: pointer; transition: all 0.2s; }
-    .filter-chip:hover { border-color: #3a7bd5; color: #fff; }
-    .filter-chip.active { background: #3a7bd5; border-color: #3a7bd5; color: #fff; }
-    .job-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-    .job-card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 20px; border: 1px solid #333; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-    .job-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-color: #3a7bd5; }
-    .job-card.recommended { border-color: #ffd700; background: linear-gradient(135deg, rgba(255,215,0,0.08) 0%, rgba(255,165,0,0.05) 100%); }
-    .job-card.urgent { border-color: #ff4444; background: linear-gradient(135deg, rgba(255,68,68,0.15) 0%, rgba(255,68,68,0.05) 100%); animation: urgentPulse 2s infinite; }
-    @keyframes urgentPulse { 0%, 100% { border-color: #ff4444; } 50% { border-color: #ff8888; } }
-    .job-title { font-size: 1.05rem; font-weight: 600; color: #fff; line-height: 1.4; }
-    .job-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-    .badge { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; font-weight: 500; }
-    .badge-new { background: #c41e3a; color: #fff; }
-    .badge-urgent { background: #ff4444; color: #fff; animation: blink 1s infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .badge-scratch { background: #ff9800; color: #000; }
-    .badge-roblox { background: #e91e63; color: #fff; }
-    .badge-robotics { background: #4caf50; color: #fff; }
-    .badge-cospaces { background: #9c27b0; color: #fff; }
-    .badge-web { background: #2196f3; color: #fff; }
-    .badge-python { background: #3776ab; color: #fff; }
-    .badge-ai { background: #ff5722; color: #fff; }
-    .badge-korean { background: #c62828; color: #fff; }
-    .badge-korean-ok { background: #1976d2; color: #fff; border: 2px solid #fff; font-weight: bold; }
-    .badge-parttime { background: #607d8b; color: #fff; }
-    .badge-fulltime { background: #4caf50; color: #fff; }
-    .badge-rec { background: #ffd700; color: #000; }
-    .badge-game { background: #9c27b0; color: #fff; }
-    .job-company { color: #3a7bd5; font-weight: 500; margin-bottom: 6px; margin-top: 10px; }
-    .job-location { color: #888; font-size: 0.9rem; }
-    .job-pay { color: #4ade80; font-weight: 600; margin-top: 8px; }
-    .section-title { font-size: 1.3rem; margin: 30px 0 20px; color: #fff; }
-    .last-updated { text-align: center; color: #666; font-size: 0.85rem; margin-top: 40px; padding: 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소룡이 코딩강사 구인공고 대시보드</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        h1 { 
+            font-size: 28px; 
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        h1::before { content: "💻"; font-size: 32px; }
+        .profile {
+            margin-top: 16px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .profile-info { display: flex; gap: 24px; flex-wrap: wrap; }
+        .profile-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            font-size: 14px;
+        }
+        .skills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .skill {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .stat-card {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-number { font-size: 32px; font-weight: bold; color: #667eea; }
+        .stat-label { font-size: 14px; color: #666; }
+        
+        .jobs-section { margin-top: 24px; }
+        .section-title {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .job-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .job-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        .job-card.top { border-left: 4px solid #ffd700; }
+        .job-card.new { border-left: 4px solid #ff4757; background: linear-gradient(to right, #fff5f5, white); }
+        .job-card.good { border-left: 4px solid #667eea; }
+        .job-card.okay { border-left: 4px solid #28a745; }
+        
+        .job-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .job-title { font-size: 18px; font-weight: 600; color: #1a1a2e; }
+        .job-company { color: #666; font-size: 14px; margin-top: 4px; }
+        .job-rating {
+            background: linear-gradient(135deg, #ffd700, #ffb700);
+            color: #1a1a2e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .job-rating.new-badge {
+            background: linear-gradient(135deg, #ff4757, #ff6b7a);
+            color: white;
+        }
+        
+        .job-details { margin-top: 16px; display: flex; gap: 24px; flex-wrap: wrap; }
+        .job-detail { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #444; }
+        
+        .job-skills { margin-top: 16px; }
+        .job-skill {
+            display: inline-block;
+            background: #e9ecef;
+            color: #495057;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        .job-skill.match {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+        
+        .job-notes {
+            margin-top: 16px;
+            padding: 12px;
+            background: #fff3cd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .job-notes.highlight {
+            background: #d4edda;
+            border: 1px solid #28a745;
+        }
+        
+        .job-actions { margin-top: 16px; display: flex; gap: 12px; }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .btn-hot {
+            background: linear-gradient(135deg, #ff4757, #ff6b7a);
+            color: white;
+        }
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .updated {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-top: 24px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>💻 코딩강사 구인공고</h1>
-      <p style="color: #888;">AI가 찾아주는 코딩강사 일자리</p>
-      <div class="profile-box">
-        <h3>👤 소룡이 프로필</h3>
-        <ul>
-          <li><strong>경력:</strong> 2023년 7월~ (약 1년 7개월)</li>
-          <li><strong>스킬:</strong> Roblox, CoSpaces, Scratch, Robotics</li>
-          <li><strong>언어:</strong> 🇰🇷 한국어 (영어 필요 없음!)</li>
-          <li><strong>지역:</strong> New York (Queens 선호)</li>
-        </ul>
-      </div>
-      <div class="stats">
-        <div class="stat-box"><div class="stat-number">13</div><div class="stat-label">전체 공고</div></div>
-        <div class="stat-box"><div class="stat-number">7</div><div class="stat-label">🗽 뉴욕</div></div>
-        <div class="stat-box"><div class="stat-number">6</div><div class="stat-label">🇰🇷 한국 온라인</div></div>
-        <div class="stat-box"><span class="new-badge">+3 NEW</span><div class="stat-label" style="margin-top:8px;">오늘 발견</div></div>
-      </div>
-    </header>
-    
-    <div class="quick-filters">
-      <button class="filter-chip active" style="background:#c41e3a;color:#fff;border-color:#c41e3a;">📅 오늘 발견</button>
-      <button class="filter-chip">⭐ 추천</button>
-      <button class="filter-chip">🐱 Scratch</button>
-      <button class="filter-chip">🎮 Roblox</button>
-      <button class="filter-chip">🤖 Robotics</button>
-      <button class="filter-chip">🇰🇷 한국어 OK</button>
+    <div class="container">
+        <header>
+            <h1>소룡이 코딩강사 구인공고</h1>
+            <div class="profile">
+                <div class="profile-info">
+                    <div class="profile-item">👤 <strong>소룡이</strong></div>
+                    <div class="profile-item">📅 경력: 2023.7~ (1년 7개월)</div>
+                    <div class="profile-item">🌍 희망지역: Queens, NY</div>
+                    <div class="profile-item">🗣️ 언어: 한국어</div>
+                </div>
+                <div class="skills">
+                    <span class="skill">Roblox</span>
+                    <span class="skill">CoSpaces</span>
+                    <span class="skill">Scratch</span>
+                    <span class="skill">Robotics</span>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">총 공고</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">🆕 오늘 발견</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">⭐⭐⭐⭐⭐ 최고 적합</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="jobs-section">
+            <h2 class="section-title">🔥 TOP 추천 공고</h2>
+            
+            <!-- 🆕 오늘 새로 발견! -->
+            <div class="job-card new">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">🆕 Robotics Coding Instructor (Part Time, After School)</div>
+                        <div class="job-company">Concorde Education ⭐4.9</div>
+                    </div>
+                    <div class="job-rating new-badge">🔥 NEW!</div>
+                </div>
+                <div class="job-details">
+                    <div class="job-detail">📍 Jamaica, NY 11424 (Queens!)</div>
+                    <div class="job-detail">💰 $50-100/hr (!)</div>
+                    <div class="job-detail">⏰ 주 1시간 x 10주</div>
+                    <div class="job-detail">🗓️ 방과후</div>
+                </div>
+                <div class="job-skills">
+                    <span class="job-skill match">Robotics ✓</span>
+                    <span class="job-skill">LEGO robotics</span>
+                    <span class="job-skill">Sphero</span>
+                    <span class="job-skill">Ozobot</span>
+                    <span class="job-skill">VEX</span>
+                    <span class="job-skill">Block-based coding</span>
+                </div>
+                <div class="job-notes highlight">
+                    🔥 <strong>완벽 매칭!</strong> 소룡이 Robotics 경험 + Queens 위치 + 시급 $50-100!<br>
+                    ⚠️ <strong>요구사항:</strong> 60학점 이상 또는 Associate degree 필요 (확인 필요)
+                </div>
+                <div class="job-actions">
+                    <a href="https://www.indeed.com/viewjob?jk=9c40acc44c3a969d" class="btn btn-hot" target="_blank">🚀 지금 지원하기</a>
+                    <a href="jd/2026-02-11/concorde-robotics-instructor.md" class="btn btn-secondary">📄 상세보기</a>
+                </div>
+            </div>
+            
+            <div class="job-card top">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Summer Coding Teacher for Kids (in-person)</div>
+                        <div class="job-company">Penguin Coding School ⭐4.6</div>
+                    </div>
+                    <div class="job-rating">⭐⭐⭐⭐⭐</div>
+                </div>
+                <div class="job-details">
+                    <div class="job-detail">📍 Brooklyn, NY 11206 (Williamsburg)</div>
+                    <div class="job-detail">💰 $20-40/hr</div>
+                    <div class="job-detail">⏰ Full-time/Part-time</div>
+                    <div class="job-detail">🗓️ 월-금 8:30am-3:30pm</div>
+                </div>
+                <div class="job-skills">
+                    <span class="job-skill match">Roblox ✓</span>
+                    <span class="job-skill match">Robotics ✓</span>
+                    <span class="job-skill">Minecraft</span>
+                    <span class="job-skill">MakeCode</span>
+                    <span class="job-skill">Python</span>
+                </div>
+                <div class="job-notes">
+                    💡 <strong>핵심:</strong> "코딩 경험보다 아이들과의 경험을 더 중요시함. 커리큘럼 트레이닝 제공!" 
+                    - 소룡이 Roblox, Robotics 경험 완벽 매칭!
+                </div>
+                <div class="job-actions">
+                    <a href="https://www.indeed.com/jobs?q=kids+coding+instructor&l=New+York%2C+NY" class="btn btn-primary" target="_blank">🔗 지원하기</a>
+                    <a href="jd/2026-02-10/penguin-coding-summer-teacher.md" class="btn btn-secondary">📄 상세보기</a>
+                </div>
+            </div>
+
+            <div class="job-card good">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Summer AI / Coding Teacher</div>
+                        <div class="job-company">Modern Chinese School</div>
+                    </div>
+                    <div class="job-rating">⭐⭐⭐⭐</div>
+                </div>
+                <div class="job-details">
+                    <div class="job-detail">📍 Flushing, NY 11355</div>
+                    <div class="job-detail">💰 TBD</div>
+                    <div class="job-detail">⏰ Summer Position</div>
+                </div>
+                <div class="job-skills">
+                    <span class="job-skill">AI</span>
+                    <span class="job-skill">Coding</span>
+                </div>
+                <div class="job-notes">
+                    📌 이미 저장한 공고 (14일 전). Flushing 위치로 Queens에서 접근 용이!
+                </div>
+                <div class="job-actions">
+                    <a href="https://www.indeed.com/jobs?q=coding+instructor+Korean&l=Queens%2C+NY" class="btn btn-primary" target="_blank">🔗 지원하기</a>
+                </div>
+            </div>
+
+            <div class="job-card okay">
+                <div class="job-header">
+                    <div>
+                        <div class="job-title">Tech Instructor: Coding & Web Design</div>
+                        <div class="job-company">The Black Currency</div>
+                    </div>
+                    <div class="job-rating">⭐⭐⭐</div>
+                </div>
+                <div class="job-details">
+                    <div class="job-detail">📍 Brooklyn, NY 11207 (Brownsville)</div>
+                    <div class="job-detail">💰 $25-29/hr</div>
+                    <div class="job-detail">⏰ Part-time 20-27hrs/week</div>
+                    <div class="job-detail">🗓️ 평일 3-5PM, 토 10AM-12PM</div>
+                </div>
+                <div class="job-skills">
+                    <span class="job-skill match">Scratch ✓</span>
+                    <span class="job-skill">HTML/CSS (필수)</span>
+                    <span class="job-skill">Python</span>
+                    <span class="job-skill">Figma</span>
+                    <span class="job-skill">Wix</span>
+                </div>
+                <div class="job-notes">
+                    ⚠️ HTML/CSS 필수 요구 - 소룡이 스킬 확인 필요. 청소년 대상 (11-19세)
+                </div>
+                <div class="job-actions">
+                    <a href="https://www.indeed.com/jobs?q=coding+instructor+Korean&l=Queens%2C+NY" class="btn btn-primary" target="_blank">🔗 지원하기</a>
+                    <a href="jd/2026-02-10/black-currency-tech-instructor.md" class="btn btn-secondary">📄 상세보기</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="updated">
+            마지막 업데이트: 2026-02-11 10:02 KST | 검색 소스: Indeed, LinkedIn, 미주중앙일보
+        </div>
     </div>
-    
-    <h2 class="section-title">🚨 긴급! 내일 마감</h2>
-    <div class="job-grid">
-      <div class="job-card urgent" onclick="window.open('https://www.jobkorea.co.kr/Recruit/GI_Read/48399078', '_blank')">
-        <div class="job-title">방과후/방문 코딩강사 (재택가능)</div>
-        <div class="job-badges">
-          <span class="badge badge-urgent">⚠️ 내일마감!</span>
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-          <span class="badge" style="background:#8bc34a;color:#000;">🏠 재택</span>
-        </div>
-        <div class="job-company">(주)와이즈교육</div>
-        <div class="job-location">📍 전국 (재택근무)</div>
-        <div class="job-pay">💰 시급 ₩40,000~ (고시급!)</div>
-        <div style="color: #ff8888; font-size: 0.85rem; margin-top: 10px;">
-          ⚠️ 2/11(내일) 마감!<br>
-          ✅ 완전 재택 가능<br>
-          ✅ 경력 무관, 신입 가능
-        </div>
-      </div>
-    </div>
-    
-    <h2 class="section-title">⭐ 추천 공고 TOP 4</h2>
-    <div class="job-grid">
-      <div class="job-card recommended" onclick="window.open('https://www.jobkorea.co.kr/Recruit/GI_Read/48563732', '_blank')">
-        <div class="job-title">청소년 로봇/코딩 교육강사 (재택근무)</div>
-        <div class="job-badges">
-          <span class="badge badge-new">🆕 오늘</span>
-          <span class="badge badge-rec">⭐ 강추!</span>
-          <span class="badge badge-robotics">🤖 Robotics</span>
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-          <span class="badge" style="background:#8bc34a;color:#000;">🏠 재택</span>
-        </div>
-        <div class="job-company">(사)대한민국청소년로봇연맹</div>
-        <div class="job-location">📍 전국 (재택근무)</div>
-        <div class="job-pay">💰 건별 ₩220,000~</div>
-        <div style="color: #ffd700; font-size: 0.85rem; margin-top: 10px;">
-          ★ 로봇 관련! 소룡이 스킬셋 완벽 매칭!<br>
-          ✅ 경력 무관, 재택근무<br>
-          ✅ 마감: 4/7까지
-        </div>
-      </div>
-      
-      <div class="job-card recommended" onclick="window.open('https://www.indeed.com/jobs?q=Tech+Instructor+Coding+Black+Currency&l=Brooklyn', '_blank')">
-        <div class="job-title">Tech Instructor: Coding & Web Design</div>
-        <div class="job-badges">
-          <span class="badge badge-rec">⭐ 추천</span>
-          <span class="badge badge-scratch">Scratch</span>
-          <span class="badge badge-python">Python</span>
-          <span class="badge badge-web">Web</span>
-          <span class="badge badge-parttime">파트타임</span>
-        </div>
-        <div class="job-company">The Black Currency</div>
-        <div class="job-location">📍 Brooklyn, NY 11207</div>
-        <div class="job-pay">💰 $25 - $29/hr</div>
-        <div style="color: #888; font-size: 0.85rem; margin-top: 10px;">
-          ✅ Scratch, Python, HTML/CSS 가르침<br>
-          ✅ 주 20-27시간<br>
-          ✅ 11-19세 대상
-        </div>
-      </div>
-      
-      <div class="job-card recommended" onclick="window.open('https://www.indeed.com/jobs?q=Summer+AI+Coding+Teacher+Flushing', '_blank')">
-        <div class="job-title">Summer AI / Coding Teacher</div>
-        <div class="job-badges">
-          <span class="badge badge-rec">⭐ 추천</span>
-          <span class="badge badge-ai">AI</span>
-          <span class="badge badge-korean">한인지역</span>
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-        </div>
-        <div class="job-company">Modern Chinese School</div>
-        <div class="job-location">📍 Flushing, NY 11355 (한인 밀집!)</div>
-        <div class="job-pay">💰 급여 협의</div>
-        <div style="color: #888; font-size: 0.85rem; margin-top: 10px;">
-          ✅ Flushing = 한인 밀집 지역<br>
-          ✅ 여름 프로그램<br>
-          ✅ AI/코딩 교육
-        </div>
-      </div>
-      
-      <div class="job-card recommended" onclick="window.open('https://www.saramin.co.kr/zf_user/jobs/relay/view?rec_idx=53049033', '_blank')">
-        <div class="job-title">[재택] 초중등 온라인 1:1 코딩강사 (화상수업)</div>
-        <div class="job-badges">
-          <span class="badge badge-rec">⭐ 추천</span>
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-          <span class="badge" style="background:#8bc34a;color:#000;">🏠 재택</span>
-        </div>
-        <div class="job-company">코더랜드 (엘리스그룹)</div>
-        <div class="job-location">📍 한국 전역 (재택근무)</div>
-        <div class="job-pay">💰 ₩20,000/시간</div>
-        <div style="color: #888; font-size: 0.85rem; margin-top: 10px;">
-          ✅ 완전 재택! 화상수업<br>
-          ✅ 초중등 대상 1:1<br>
-          ✅ 상시채용
-        </div>
-      </div>
-    </div>
-    
-    <h2 class="section-title">📋 뉴욕 지역 공고</h2>
-    <div class="job-grid">
-      <div class="job-card" onclick="window.open('https://www.indeed.com/jobs?q=Korean+Community+Services+Instructor+Corona', '_blank')">
-        <div class="job-title">KOREAN DATA/Smartphone Instructor</div>
-        <div class="job-badges">
-          <span class="badge badge-korean">🇰🇷 한인</span>
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-        </div>
-        <div class="job-company">Korean Community Services</div>
-        <div class="job-location">📍 Corona, NY 11368</div>
-        <div class="job-pay">💰 급여 협의</div>
-      </div>
-      
-      <div class="job-card" onclick="window.open('https://www.indeed.com/jobs?q=Teaching+Assistant+Prestige+Institute+Bayside', '_blank')">
-        <div class="job-title">Teaching Assistant (TA)</div>
-        <div class="job-badges">
-          <span class="badge badge-parttime">파트타임</span>
-        </div>
-        <div class="job-company">Prestige Institute</div>
-        <div class="job-location">📍 Bayside, NY 11361</div>
-        <div class="job-pay">💰 401(k) 제공</div>
-      </div>
-      
-      <div class="job-card" onclick="window.open('https://www.indeed.com/jobs?q=After+School+Teacher+Little+Neck', '_blank')">
-        <div class="job-title">After School Teacher</div>
-        <div class="job-badges">
-          <span class="badge badge-parttime">파트타임</span>
-        </div>
-        <div class="job-company">Afterschool, Little Neck</div>
-        <div class="job-location">📍 Little Neck, NY 11362</div>
-        <div class="job-pay">💰 PTO + 유연근무</div>
-      </div>
-      
-      <div class="job-card" onclick="window.open('https://www.linkedin.com/jobs/view/4363811708/', '_blank')">
-        <div class="job-title">Entry-Level to Experienced Teacher</div>
-        <div class="job-badges">
-          <span class="badge badge-fulltime">풀타임</span>
-        </div>
-        <div class="job-company">Success Academy Charter Schools</div>
-        <div class="job-location">📍 New York, NY</div>
-        <div class="job-pay">💰 $65K - $75K/연</div>
-      </div>
-      
-      <div class="job-card" onclick="window.open('https://www.linkedin.com/jobs/view/4313123426/', '_blank')">
-        <div class="job-title">Python Video Course Instructor</div>
-        <div class="job-badges">
-          <span class="badge badge-python">Python</span>
-          <span class="badge" style="background:#8bc34a;color:#000;">🏠 재택</span>
-        </div>
-        <div class="job-company">Real Python</div>
-        <div class="job-location">📍 미국 (재택근무)</div>
-        <div class="job-pay">💰 급여 협의</div>
-      </div>
-    </div>
-    
-    <h2 class="section-title">🇰🇷 한국 온라인 코딩강사 (재택근무)</h2>
-    <div class="job-grid">
-      <div class="job-card" onclick="window.open('https://www.jobkorea.co.kr/Recruit/GI_Read/48525235', '_blank')">
-        <div class="job-title">게임개발 코딩강사</div>
-        <div class="job-badges">
-          <span class="badge badge-new">🆕 오늘</span>
-          <span class="badge badge-game">🎮 게임개발</span>
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-        </div>
-        <div class="job-company">팀스파르타(주)</div>
-        <div class="job-location">📍 서울 강남구</div>
-        <div class="job-pay">💰 급여 협의</div>
-        <div style="color: #888; font-size: 0.85rem; margin-top: 10px;">
-          ✅ 게임개발 관련 코딩강사<br>
-          ✅ 마감: 4/3까지
-        </div>
-      </div>
-      
-      <div class="job-card" onclick="window.open('https://www.saramin.co.kr/zf_user/jobs/relay/view?rec_idx=53020238', '_blank')">
-        <div class="job-title">[디랩 코딩] B2B/B2G 코딩·AI 교육 팀장</div>
-        <div class="job-badges">
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-          <span class="badge badge-ai">AI</span>
-          <span class="badge badge-fulltime">정규직</span>
-        </div>
-        <div class="job-company">(주)디랩</div>
-        <div class="job-location">📍 경기 성남시 분당구</div>
-        <div class="job-pay">💰 경력 3년↑</div>
-      </div>
-      
-      <div class="job-card" onclick="window.open('https://www.saramin.co.kr/zf_user/jobs/relay/view?rec_idx=53031218', '_blank')">
-        <div class="job-title">[잼코딩] 강남 대치 코딩학원 컴퓨터강사</div>
-        <div class="job-badges">
-          <span class="badge badge-korean-ok">🇰🇷 한국어 OK</span>
-          <span class="badge badge-scratch">Scratch</span>
-          <span class="badge badge-parttime">파트타임</span>
-        </div>
-        <div class="job-company">(주)잼코딩</div>
-        <div class="job-location">📍 서울 강남구 대치동</div>
-        <div class="job-pay">💰 급여 협의</div>
-      </div>
-    </div>
-    
-    <div class="last-updated">
-      마지막 업데이트: 2026-02-10 14:36 (KST)<br>
-      뉴욕 7개 + 한국 온라인 6개 = 총 13개 공고<br>
-      <span style="color:#4ade80;">오늘 새로 발견: +3개</span>
-    </div>
-  </div>
 </body>
 </html>
